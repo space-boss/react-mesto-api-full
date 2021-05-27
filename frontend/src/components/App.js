@@ -60,11 +60,13 @@ function App() {
       .then((data) => {
         if (!data) throw new Error('Неверные имя пользователя или пароль')
         if (data.token) {
-          setLoggedIn(true)
           localStorage.setItem('token', data.token)
-          return;
-        }
-      })
+          apiConfig.setToken()
+          setLoggedIn(true)
+          history.push('/')}        
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
 
@@ -80,16 +82,15 @@ function App() {
     });
   }
 
-
   const tokenCheck = () => {
     if (localStorage.getItem('token')) {
       let token = localStorage.getItem('token');
-      authApi.getContent(token).then(({ data }) => {
-        if (data.email) {
+      authApi.getContent(token).then(({ email }) => {
+        console.log(email);
+        if (email) {
           setLoggedIn(true);
-          setEmail(data.email);
+          setEmail(email);
         }
-        console.log(data.email);
       });
     }
   }

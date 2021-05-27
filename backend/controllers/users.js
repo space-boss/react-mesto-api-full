@@ -46,7 +46,7 @@ module.exports.getCurrentProfile = async (req, res, next) => {
       .orFail(new NotFoundError('Пользователь с данным _id не найден'));
     res.status(200).json(
       {
-        name: user.name, about: user.about, avatar: user.avatar, _id: user._id,
+        name: user.name, email: user.email, about: user.about, avatar: user.avatar, _id: user._id,
       },
     );
   } catch (err) {
@@ -91,11 +91,7 @@ module.exports.login = async (req, res, next) => {
       throw new AuthError('Неверные почта или пароль');
     }
     const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
-    res.cookie('userToken', token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: true,
-    }).send({ _id: user._id });
+    res.send({ token });
   } catch (err) {
     next(err);
   }

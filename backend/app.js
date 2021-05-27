@@ -11,11 +11,10 @@ const { isURL } = require('validator');
 
 const auth = require('./middlewares/auth');
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
+const { PORT = 2000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 const { createUser, login } = require('./controllers/users');
 const { usersRoutes } = require('./routes/users.js');
 const { cardsRoutes } = require('./routes/cards.js');
-const ValidationError = require('./errors/validation-err');
 const NotFoundError = require('./errors/not-found-err');
 
 mongoose.set('debug', true);
@@ -38,7 +37,10 @@ const validateUrl = (value, helpers) => {
   return value;
 };
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
