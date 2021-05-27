@@ -38,7 +38,7 @@ const validateUrl = (value, helpers) => {
 };
 
 app.use(cors({
-  origin: 'https://spaceboss.mesto.nomoredomains.club/',
+  origin: 'https://spaceboss.mesto.nomoredomains.club',
   credentials: true,
 }));
 
