@@ -9,14 +9,13 @@ class Api {
 
   setToken() {
     this._headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    console.log(this._headers.Authorization);
   }
 
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`penis ${res.status}`);
+    return Promise.reject(`Ошибка ${res.status}`);
   }
 
   getInfo() {
@@ -89,7 +88,7 @@ class Api {
   }
   
   likeCard(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: "PUT",
       'credentials': 'include',
       headers: this._headers, 
@@ -97,7 +96,7 @@ class Api {
   }
 
   unlikeCard(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: "DELETE",
       'credentials': 'include',
       headers: this._headers,
