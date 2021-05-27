@@ -38,9 +38,15 @@ const validateUrl = (value, helpers) => {
 };
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://spaceboss.mesto.nomoredomains.club/',
   credentials: true,
 }));
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -59,8 +65,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use('/', auth, usersRoutes);
-app.use('/', auth, cardsRoutes);
+app.use('/api', auth, usersRoutes);
+app.use('/api', auth, cardsRoutes);
 
 app.use((req, res, next) => {
   next(new NotFoundError('Ресурс не найден'));

@@ -50,5 +50,5 @@ class AuthApi {
 
 
 export const authApi = new AuthApi({
-  url: "http://localhost:2000",
+  url: "https://api.spaceboss.mesto.nomoredomains.icu",
 });
