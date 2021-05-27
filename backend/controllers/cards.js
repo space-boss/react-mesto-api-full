@@ -7,7 +7,7 @@ const ValidationError = require('../errors/validation-err');
 module.exports.getCards = async (req, res, next) => {
   try {
     const cards = await Cards.find({});
-    res.status(200).send({ data: cards });
+    res.status(200).send(cards);
   } catch (err) {
     next(err);
   }
@@ -62,7 +62,7 @@ module.exports.likeCard = async (req, res, next) => {
       { new: true },
     )
       .orFail(new NotFoundError('Карточка с данным _id не найдена'));
-    res.status(200).json({ data: likedCard });
+    res.status(200).json(likedCard);
   } catch (err) {
     next(err);
   }
@@ -76,7 +76,7 @@ module.exports.unlikeCard = async (req, res, next) => {
       { new: true },
     )
       .orFail(new NotFoundError('Карточка с данным _id не найдена'));
-    res.status(200).json({ data: unlikedCard });
+    res.status(200).json(unlikedCard);
   } catch (err) {
     next(err);
   }

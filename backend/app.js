@@ -11,11 +11,10 @@ const { isURL } = require('validator');
 
 const auth = require('./middlewares/auth');
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
+const { PORT = 2000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 const { createUser, login } = require('./controllers/users');
 const { usersRoutes } = require('./routes/users.js');
 const { cardsRoutes } = require('./routes/cards.js');
-const ValidationError = require('./errors/validation-err');
 const NotFoundError = require('./errors/not-found-err');
 
 mongoose.set('debug', true);
@@ -38,7 +37,16 @@ const validateUrl = (value, helpers) => {
   return value;
 };
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://spaceboss.mesto.nomoredomains.club/',
+  credentials: true,
+}));
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -57,8 +65,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use('/', auth, usersRoutes);
-app.use('/', auth, cardsRoutes);
+app.use('/api', auth, usersRoutes);
+app.use('/api', auth, cardsRoutes);
 
 app.use((req, res, next) => {
   next(new NotFoundError('Ресурс не найден'));

@@ -60,11 +60,13 @@ function App() {
       .then((data) => {
         if (!data) throw new Error('Неверные имя пользователя или пароль')
         if (data.token) {
-          setLoggedIn(true)
           localStorage.setItem('token', data.token)
-          return;
-        }
-      })
+          apiConfig.setToken()
+          setLoggedIn(true)
+          history.push('/')}        
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
 
@@ -80,16 +82,14 @@ function App() {
     });
   }
 
-
   const tokenCheck = () => {
     if (localStorage.getItem('token')) {
       let token = localStorage.getItem('token');
-      authApi.getContent(token).then(({ data }) => {
-        if (data.email) {
+      authApi.getContent(token).then(({ email }) => {
+        if (email) {
           setLoggedIn(true);
-          setEmail(data.email);
+          setEmail(email);
         }
-        console.log(data.email);
       });
     }
   }
@@ -106,6 +106,9 @@ function App() {
 
 
   React.useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    };
     apiConfig.getInfo()
     .then((res) => {
       setCurrentUser(res)
@@ -113,10 +116,13 @@ function App() {
     .catch((err) => {
       console.log(err);
     });
-  }, []);
+  }, [isLoggedIn]);
 
 
   React.useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    };
     apiConfig.getCard()
     .then((res) => {
       setCards(res);
@@ -124,7 +130,7 @@ function App() {
     .catch((err) => {
       console.log(err);
     });
-  }, []);
+  }, [isLoggedIn]);
   
 
   function handleAddPlaceSubmit(data) {
@@ -139,7 +145,7 @@ function App() {
   }
  
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
 
     if (!isLiked) {
       apiConfig.likeCard(card._id)
