@@ -4,7 +4,7 @@
   "description": "backend of the Mesto service",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --exit",
+    "test": "jest",
     "lint": "npx eslint .",
     "dev": "nodemon app.js",
     "start": "node app.js"
