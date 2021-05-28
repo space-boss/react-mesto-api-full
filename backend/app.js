@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 require('dotenv').config();
 const express = require('express');
-
 const mongoose = require('mongoose');
+
+const router = express.Router();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -17,13 +18,13 @@ const { usersRoutes } = require('./routes/users.js');
 const { cardsRoutes } = require('./routes/cards.js');
 const NotFoundError = require('./errors/not-found-err');
 
-mongoose.set('debug', true);
+mongoose.set('debug', false);
 
 const app = express();
 
-app.use(bodyParser.json());
+router.use(bodyParser.json());
 
-app.use(cookieParser());
+router.use(cookieParser());
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
@@ -37,25 +38,27 @@ const validateUrl = (value, helpers) => {
   return value;
 };
 
-app.use(cors({
+const methodNotAllowed = (req, res, next) => res.status(404).send();
+
+router.use(cors({
   origin: 'https://spaceboss.mesto.nomoredomains.club',
   credentials: true,
 }));
 
-app.get('/crash-test', () => {
+router.route('/crash-test').get(() => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
 
-app.post('/signin', celebrate({
+router.route('/signin').post(celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
   }),
-}), login);
+}), login).all(methodNotAllowed);
 
-app.post('/signup', celebrate({
+router.route('/signup').post(celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
@@ -63,18 +66,18 @@ app.post('/signup', celebrate({
     name: Joi.string().min(2).max(30).default('Жак-Ив Кусто'),
     about: Joi.string().min(2).max(30).default('Исследователь'),
   }),
-}), createUser);
+}), createUser).all(methodNotAllowed);
 
-app.use('/', auth, usersRoutes);
-app.use('/', auth, cardsRoutes);
+router.use('/', auth, usersRoutes);
+router.use('/', auth, cardsRoutes);
 
-app.use((req, res, next) => {
+router.use((req, res, next) => {
   next(new NotFoundError('Ресурс не найден'));
 });
 
-app.use(errors());
+router.use(errors());
 
-app.use((err, req, res, next) => {
+router.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res
     .status(statusCode)
@@ -86,9 +89,11 @@ app.use((err, req, res, next) => {
   next();
 });
 
+app.use(router);
+
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
 });
 
-module.exports = app;
+module.exports = router;
