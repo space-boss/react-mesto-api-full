@@ -11,5 +11,6 @@ The application was deployed on the remote server and the domain name was assign
 [Readme of a backend part of Mesto](https://github.com/space-boss/express-mesto/edit/main/README.md)
 
 Website domain: https://spaceboss.mesto.nomoredomains.club/
+
 Public IP of the server: 116.203.138.46
 
