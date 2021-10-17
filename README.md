@@ -1,23 +1,13 @@
-# Проектная работа 15: Настройка и деплой бэкенда
+# FINAL VERSION OF MESTO. Student project for Yandex.Practicum
 
-Исправление после первого ревью:
-* Устранены ошибки линтера
-* Добавлен рут экспресса, отвечающий ошибкой 404 на все заросы к signin, signup кроме POST. 
+## Description
+The repository that unites the frontend and backend parts of the Mesto student project - a web application for sharing photos with the functionality of user registration and authetication. 
 
+The application was deployed on the remote server and the domain name was assigned to it.
 
+## Links
+[Readme of a frontend part of Mesto](https://github.com/space-boss/mesto-react/edit/main/README.md)
+[Readme of a backend part of Mesto](https://github.com/space-boss/express-mesto/edit/main/README.md)
 
-В этом проекте бэкенд проекта Место с аутентификацией объединен с бэкендом.
-* Настроен сервер
-* Подключено доменное имя
-* Методы авторизации на части бэкенда и фронтенда согласованы друг с другом 
-
-Публичный IP сервера: 116.203.138.46
-Домен: https://spaceboss.mesto.nomoredomains.club/
-
-
-
-
-
-
-
-
+Website domain: https://spaceboss.mesto.nomoredomains.club/
+Public IP of the server: 116.203.138.46
