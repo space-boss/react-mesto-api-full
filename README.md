@@ -6,9 +6,9 @@ The repository that unites the frontend and backend parts of the Mesto student p
 The application was deployed on the remote server and the domain name was assigned to it.
 
 ## Links
-[Readme of a frontend part of Mesto](https://github.com/space-boss/mesto-react/edit/main/README.md)
+[See readme of here to learn about the frontend functionality of the project](https://github.com/space-boss/mesto-react)
 
-[Readme of a backend part of Mesto](https://github.com/space-boss/express-mesto/edit/main/README.md)
+[Project backend](https://github.com/space-boss/express-mesto)
 
 Website domain: https://spaceboss.mesto.nomoredomains.club/
 
